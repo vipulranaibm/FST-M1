@@ -1,24 +1,27 @@
-# Import pandas
-import pandas
-from pandas import ExcelWriter
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
 
-# Create a dictionary that will be used to create the DataFrame
-data = {
-	'FirstName':["Satvik", "Avinash", "Lahri"],
-	'LastName':["Shah", "Kati", "Rath"],
-	'Email':["satshah@example.com", "avinashK@example.com", "lahri.rath@example.com"],
-	'PhoneNumber':["4537829158", "4892184058", "4528727830"]
-}
 
-# Create the DataFrame that will be written to the excel file
-dataframe = pandas.DataFrame(data)
+# Set up the Firefox Driver with WebDriverManger
+service = FirefoxService(GeckoDriverManager().install())
 
-# Print the dataframe
-print(dataframe)
+# Start the Driver
+with webdriver.Firefox(service=service) as driver:
+    # Navigate to the URL
+    driver.get("https://v1.training-support.net/selenium/javascript-alerts")
+    # Print the title of the page
+    print("Page title is: ", driver.title)
 
-# Write the dataframe to a Excel file
-writer = ExcelWriter('sample.xlsx')
-dataframe.to_excel(writer, 'Sheet1', index = False)
-
-# Commit data to the Excel file
-writer._save()
+    # Find the confirm button and click it
+    driver.find_element(By.ID, "confirm").click()
+    # Switch focus to the alert
+    confirm_alert = driver.switch_to.alert
+    # Print the text in the alert
+    print(confirm_alert.text)
+    # Close the alert with either one of the methods
+    # with OK
+    confirm_alert.accept()
+    # with Cancel
+    # confirm_alert.dismiss()

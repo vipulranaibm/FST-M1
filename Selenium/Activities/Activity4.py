@@ -1,46 +1,31 @@
-# Get the names of the users
-user1 = input("What is Player 1's name? ")
-user2 = input("What is Player 2's name? ")
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
 
-# While looping endlessly
-while True:
-    # Ask User1's choice
-    user1_answer = input(user1 + ", do you want to choose rock, paper or scissors? ").lower()
-    
-    # Ask User2's choice
-    user2_answer = input(user2 + ", do you want to choose rock, paper or scissors? ").lower()
-    
-    # Run the algorithm to see who wins
-    if user1_answer == user2_answer:
-        print("It's a tie!")
-    elif user1_answer == 'rock':
-        if user2_answer == 'scissors':
-            print("Rock wins!")
-        else:
-            print("Paper wins!")
-    elif user1_answer == 'scissors':
-        if user2_answer == 'paper':
-            print("Scissors win!")
-        else:
-            print("Rock wins!")
-    elif user1_answer == 'paper':
-        if user2_answer == 'rock':
-            print("Paper wins!")
-        else:
-            print("Scissors win!")
-    else:
-        print("Invalid input! You have not entered rock, paper or scissors, try again.")
+# Set up the Firefox Driver with WebDriverManger
+service = FirefoxService(GeckoDriverManager().install())
 
-    # Ask them if they want to play again
-    repeat = input("Do you want to play another round? Yes/No: ").lower()
-    
-    # If they say yes, don't do anything
-    if(repeat == "yes"):
-        pass
-    # If they say no, exit the game
-    elif(repeat == "no"):
-        raise SystemExit
-    # If they say anything else, exit with an error message.
-    else:
-        print("You entered an invalid option. Exiting now.")
-        raise SystemExit
+# Start the Driver
+with webdriver.Firefox(service=service) as driver:
+    # Navigate to the URL
+    driver.get("https://v1.training-support.net/selenium/target-practice")
+
+    # Print the title of the page
+    print("Page title is: ", driver.title)
+
+    # Find the 3rd header element on the page using XPath
+    third_heading = driver.find_element(By.XPATH, "//h3[@id='third-header']")
+    print("Third heading text is: ", third_heading.text)
+
+    # Find the 5th header element on the page using XPath
+    fifth_heading = driver.find_element(By.XPATH, "//h5")
+    print("Fifth heading colour is: ", fifth_heading.value_of_css_property("color"))
+
+    # Find the violet button element on the page
+    violet_button = driver.find_element(By.CLASS_NAME, "violet")
+    print("Violet button's classes are: ", violet_button.get_attribute("class"))
+
+    # Find the grey button element on the page
+    grey_button = driver.find_element(By.CLASS_NAME, "grey")
+    print("Text in grey button is: ", grey_button.text)
