@@ -36,6 +36,15 @@ public class LoginTestSteps {
 
 }
 
+	@When ("User enters {string} and {string}")
+	public void user_crdentials (String username, String password) {
+		driver.findElement(By.id("username")).sendKeys(username);
+
+        driver.findElement(By.id("password")).sendKeys(password);
+
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+	
+	}
 	@Then ("Read the page title and confirmation message")
 	public void user_should_see_result() {
 		String pageTitle = driver.getTitle();
